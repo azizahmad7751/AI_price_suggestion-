@@ -1,9 +1,19 @@
-
 'use client'
 import { useState } from 'react'
 
+//  Define the response type from the API
+type PriceSuggestionResponse = {
+  priceRange: {
+    min: number
+    max: number
+  }
+  confidence: number
+  reason: string
+}
+
 export default function Home() {
-  const [priceData, setPriceData] = useState(null)
+  const [priceData, setPriceData] = useState<PriceSuggestionResponse | null>(null)
+
   const [form, setForm] = useState({
     brand: '',
     condition: '',
@@ -13,7 +23,9 @@ export default function Home() {
     material: ''
   })
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
 
   const handleSubmit = async () => {
     const res = await fetch('/api/price-suggestion', {
@@ -21,7 +33,8 @@ export default function Home() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form)
     })
-    const data = await res.json()
+
+    const data: PriceSuggestionResponse = await res.json()
     setPriceData(data)
   }
 
@@ -81,8 +94,12 @@ export default function Home() {
       {priceData && (
         <div className="mt-8 p-6 bg-white bg-opacity-80 border-2 border-indigo-400 rounded-xl text-center shadow-lg">
           <p className="text-xl font-semibold text-indigo-700">Suggested Price Range</p>
-          <p className="text-3xl text-green-600 my-2">${priceData.priceRange.min} – ${priceData.priceRange.max}</p>
-          <p className="text-sm text-gray-600">Confidence Level: <span className="font-bold text-indigo-800">{priceData.confidence}%</span></p>
+          <p className="text-3xl text-green-600 my-2">
+            ${priceData.priceRange.min} – ${priceData.priceRange.max}
+          </p>
+          <p className="text-sm text-gray-600">
+            Confidence Level: <span className="font-bold text-indigo-800">{priceData.confidence}%</span>
+          </p>
           <p className="text-xs italic text-gray-500 mt-2">{priceData.reason}</p>
         </div>
       )}
