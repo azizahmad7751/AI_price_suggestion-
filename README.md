@@ -49,7 +49,7 @@ To run the application locally:
 
 ```bash
 git clone https://github.com/azizahmad7751/AI_price_suggestion-.git
-cd AI_price_suggestion
+cd AI_price_suggestion-
 npm install
 npm run dev
 ```
