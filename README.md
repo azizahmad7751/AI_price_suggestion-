@@ -48,7 +48,7 @@ To run the application locally:
 4. Start the development server
 
 ```bash
-git clone https://github.com/your-username/AI_price_suggestion.git
+git clone https://github.com/azizahmad7751/AI_price_suggestion-.git
 cd AI_price_suggestion
 npm install
 npm run dev
